@@ -4,8 +4,8 @@ import java.util.List;
 public class NorGate extends BasicGate {
 	@Override
 	public boolean calculateValue() {
-			if (getInputGate().size() > 1) {
-				for (Gate gate : getInputGate()) {
+			if (getInputGates().size() > 1) {
+				for (Gate gate : getInputGates()) {
 					if (gate.getOutputValue()) {
 						return false;
 					}
@@ -13,7 +13,7 @@ public class NorGate extends BasicGate {
 				return true;
 			} else {
 				String message = "Gate: " + getName() + 
-						" - Incorrect number of input signals. Number is: " + getInputGate().size();
+						" - Incorrect number of input signals. Number is: " + getInputGates().size();
 				throw new GateException(message);
 			}
 	}

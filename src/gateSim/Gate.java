@@ -59,8 +59,10 @@ public abstract class Gate {
 		if (inputGates == null) {
 			inputGates = new ArrayList<Gate>();
 			inputGates.add(gate);
+			gate.setOutputGate(this);
 		} else {
 			inputGates.add(gate);
+			gate.setOutputGate(this);
 		}
 	}
 	
@@ -68,12 +70,21 @@ public abstract class Gate {
 	 * Gets the connected inputgates
 	 * @return A list of input gates.
 	 */
-	public List<Gate> getInputGate(){
+	public List<Gate> getInputGates(){
 		if (inputGates == null) {
 			inputGates = new ArrayList<Gate>();
 			return inputGates;
 		} else {
 			return inputGates;
+		}
+	}
+	
+	public void setOutputGate(Gate gate){
+		if (outputGates == null) {
+			outputGates = new ArrayList<Gate>();
+			outputGates.add(gate);
+		} else {
+			outputGates.add(gate);
 		}
 	}
 	
@@ -90,10 +101,16 @@ public abstract class Gate {
 	
 	/**
 	 * Tells the gate that the output has changed and sets the new
-	 * output value.
+	 * output value. Notifies all connected gates that it's output
+	 * has changed.
 	 * @param output The new output value of the Gate.
 	 */
 	protected void outputChanged(boolean output){
 		outputValue = output;
+		if (outputGates != null) {
+			for (Gate gate : outputGates) {
+				gate.inputChanged();
+			}
+		}
 	}
 }

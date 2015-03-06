@@ -28,8 +28,6 @@ public class GateTest1 {
           Thread.sleep(100);
         }
         catch (Exception e) {}
-        System.out.println(n1.getOutputValue());
-        System.out.println(n2.getOutputValue());
         System.out.println(value(x) + "  " + value(y) + "  " + value(z));
       }   
   }

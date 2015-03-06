@@ -10,18 +10,19 @@ public class NotGate extends BasicGate {
 	 */
 	@Override
 	public void setInputGate(Gate gate) {
-		if (getInputGate().size() == 0) {
-			getInputGate().add(gate);
+		if (getInputGates().size() == 0) {
+			getInputGates().add(gate);
+			gate.setOutputGate(this);
 		} else {
 			String message = "Gate: " + getName() + 
-					" - Incorrect number of input signals. Number is: " + getInputGate().size();
+					" - Incorrect number of input signals. Number is: " + getInputGates().size();
 			throw new GateException(message);
 		}
 	}
 
 	@Override
 	public boolean calculateValue() {
-		return !(getInputGate().get(0).getOutputValue());
+		return !(getInputGates().get(0).getOutputValue());
 	}
 
 }
