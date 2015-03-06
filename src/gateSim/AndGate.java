@@ -2,6 +2,9 @@ package gateSim;
 import java.util.List;
 
 public class AndGate extends BasicGate {
+	
+	
+
 	@Override
 	public boolean calculateValue() {
 			if (getInputGates().size() > 1) {
