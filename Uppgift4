@@ -1,0 +1,21 @@
+
+Uppgift 4.
+
+1. Till skillnad från EXIT_ON_CLOSE stängs inte programmet ner, utan
+   den kör fortfarande, men stänger ner fönstret samt "städar upp"
+   resurser som tillhör detta.
+   
+2. inputMap används som koppling mellan SignalGate och RadioButton.
+   Det är en LinkedHashList där JRadioButton är nyckelelement till
+   korresponderande Gate. När actionEvent från en JRadioButton
+   fångas så används värdet av .getSource()-metoden som nyckel
+   för att hitta den korresponderande Gaten i inputMap.
+   outputMap fungerar på ett motsvarande sätt.
+   
+3. Läser av värdet på JRadioButton med hjälp av isSelected()-metoden och sätter
+   motsvarande värdet på grindarna.
+   
+4. Det finns en timer som skickar events till GateProg var 100-millisekund
+   där den får information på alla knappar och uppdaterar statusen.
+   
+5. Den visar meddelandet som skickades med GateException och disposar() sedan.

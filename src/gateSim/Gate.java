@@ -1,5 +1,6 @@
 package gateSim;
 import java.util.*;
+import java.io.*;
 
 public abstract class Gate {
 	private String name;
@@ -142,4 +143,99 @@ public abstract class Gate {
 			}
 		}
 	}
+	
+	/**
+	 * createGates is a method that reads a custom file and "creates" the gates.
+	 * @param file The file to parse from.
+	 * @return LinkedHashMap with a gatenames as keys and their corresponding gates as values.
+	 */
+	public static Map<String, Gate> createGates(File file){
+		Map<String, Gate> gateMap = new LinkedHashMap<String, Gate>();
+		BufferedReader fileReader;
+		try {
+			fileReader = new BufferedReader(new FileReader(file));
+			lineReader(fileReader, gateMap, "gate");
+			fileReader = new BufferedReader(new FileReader(file));
+			lineReader(fileReader, gateMap, "logic");
+		} catch (IOException e) {
+			throw new GateException("createGates: Cannot read file");
+		}
+		return gateMap;
+	}
+	
+	/**
+	 * Reads each line in the file and sends them to the correct parsermethod.
+	 * @param fileReader BufferedReader with the text to parse.
+	 * @param gateMap The LinkedHashMap to populate.
+	 * @param mode Is a string that decides which parser to use.
+	 */	
+	public static void lineReader(BufferedReader fileReader, 
+			Map<String, Gate> gateMap, String mode){
+		try {
+			String line = fileReader.readLine();
+			while (line != null) {
+				if (mode == "gate") {
+					gateParse(gateMap, line);
+					line = fileReader.readLine();
+				} else if (mode == "logic") {
+					logicParse(gateMap, line);
+					line = fileReader.readLine();
+				}
+			}
+			fileReader.close();
+		} catch (IOException e) {
+			throw new GateException("lineReader: Can't read line");
+		}
+		}
+	
+	/**
+	 * Parser method for creating gates.
+	 * <p>
+	 * Checks if the line is a comment or not. If not, it parses the input
+	 * at white spaces and adds the name and created gate to the Map. 
+	 * @param gateMap The LinkedHashMap to populate.
+	 * @param line A string containing a single line to parse.
+	 */
+	private static void gateParse(Map<String, Gate> gateMap, String line) {
+		String[] tokens = line.split("\\s+");
+		if (!tokens[0].matches("\\\\.|\\*.")) {
+			try {
+				String gateName;
+				String className;
+				Gate gate;
+				if (gateMap.containsKey(tokens[0])) {
+					throw new GateException("Duplicate gate names");
+				} else {
+					gateName = tokens[0];
+				}
+				className = tokens[1].toLowerCase();
+				className = Character.toUpperCase(className.charAt(0)) 
+						+ className.substring(1) + "Gate";
+				gate = (Gate)Class.forName("gateSim." + className).newInstance();
+				gate.setName(gateName);
+				gateMap.put(gateName, gate);
+			} catch (InstantiationException 
+					| IllegalAccessException | ClassNotFoundException e) {
+				throw new GateException("gateParse: Class creation error");
+			}
+		}
+	}
+	
+	/**
+	 * Parses the logic of the gate system and adds the correct output
+	 * gates to the gates in the gateMap
+	 * @param gateMap The gateMap containing the gates to update.
+	 * @param line A single line containing the text to parse.
+	 */
+	private static void logicParse(Map<String, Gate> gateMap, String line) {
+		String[] tokens = line.split("\\s+");
+		if (!tokens[0].matches("\\\\.|\\*.")) {
+			Gate gate = gateMap.get(tokens[0]);
+			for (int i = 2; tokens.length > i; i++) {			
+				gate.setInputGate(gateMap.get(tokens[i]));	
+			}
+		}
+	}
+
+
 }
