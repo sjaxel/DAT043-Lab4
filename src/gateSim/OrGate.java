@@ -1,5 +1,4 @@
 package gateSim;
-import java.util.List;
 
 public class OrGate extends BasicGate {
 	@Override

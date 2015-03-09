@@ -27,7 +27,7 @@ public abstract class Gate {
 	
 	/**
 	 * Set the delay of the Gate.
-	 * @param delay The delay in milliseconds.
+	 * @param d The delay in milliseconds.
 	 */
 	public static void setDelay(int d){
 		delay = d;
@@ -63,7 +63,7 @@ public abstract class Gate {
 	 * This adds the supplied gate to the input variables of
 	 * the gate. It also adds this gate to the output list
 	 * of the provided gate.
-	 * @param gateList A list of Gate.
+	 * @param gate The gate to add as input.
 	 */
 	public void setInputGate(Gate gate) {
 		if (inputGates == null) {
@@ -169,8 +169,8 @@ public abstract class Gate {
 	 * @param gateMap The LinkedHashMap to populate.
 	 * @param mode Is a string that decides which parser to use.
 	 */	
-	public static void lineReader(BufferedReader fileReader, 
-			Map<String, Gate> gateMap, String mode){
+	private static void lineReader(BufferedReader fileReader, 
+				Map<String, Gate> gateMap, String mode){
 		try {
 			String line = fileReader.readLine();
 			while (line != null) {
@@ -214,9 +214,11 @@ public abstract class Gate {
 				gate = (Gate)Class.forName("gateSim." + className).newInstance();
 				gate.setName(gateName);
 				gateMap.put(gateName, gate);
-			} catch (InstantiationException 
+			} catch (InstantiationException
 					| IllegalAccessException | ClassNotFoundException e) {
-				throw new GateException("gateParse: Class creation error");
+				throw new GateException("gateParse(): Class creation error");
+			} catch (ArrayIndexOutOfBoundsException e) {
+
 			}
 		}
 	}

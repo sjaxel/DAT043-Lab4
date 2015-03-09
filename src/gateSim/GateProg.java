@@ -2,11 +2,10 @@ package gateSim;
 
 import java.awt.*;
 import java.awt.event.*; 
+
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.filechooser.*;
 import java.util.*;
-import java.io.*;
 
 public class GateProg extends JFrame implements ActionListener {
   Map<String, Gate> gateMap;
@@ -38,7 +37,7 @@ public class GateProg extends JFrame implements ActionListener {
     if (res == JFileChooser.APPROVE_OPTION)
     try { 
       gateMap = Gate.createGates(fc.getSelectedFile());
-      JLabel l = new JLabel(fc.getSelectedFile().getName(), JLabel.CENTER);
+      JLabel l = new JLabel(fc.getSelectedFile().getName(), SwingConstants.CENTER);
       l.setFont(new Font("SansSerif", Font.BOLD, 13));
       add(l, BorderLayout.NORTH);
       Font fo = new Font("Monospaced", Font.BOLD, 13);
@@ -102,7 +101,8 @@ public class GateProg extends JFrame implements ActionListener {
   }
             
   // lyssnarmetoder
-  public void actionPerformed(ActionEvent ae) {
+  @Override
+public void actionPerformed(ActionEvent ae) {
     if (ae.getSource() instanceof JRadioButton) {
       JRadioButton rb = (JRadioButton) ae.getSource();
       inputMap.get(rb).setValue(rb.isSelected());
@@ -113,7 +113,8 @@ public class GateProg extends JFrame implements ActionListener {
   } 
 
   private WindowListener wl = new WindowAdapter() {
-    public void windowClosed(WindowEvent e) {
+    @Override
+	public void windowClosed(WindowEvent e) {
       finish();
     }
   };     

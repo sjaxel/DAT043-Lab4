@@ -1,12 +1,10 @@
 package gateSim;
-import java.util.List;
-
 
 public class NotGate extends BasicGate {
 	
 	/**
 	 * Sets the input gates of the gate.
-	 * @param gateList A list containing (1) Gate.
+	 * @param gate A gate to add as input.
 	 */
 	@Override
 	public void setInputGate(Gate gate) {

@@ -1,5 +1,4 @@
 package gateSim;
-import java.util.List;
 
 public class SignalGate extends Gate {
 
